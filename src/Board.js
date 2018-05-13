@@ -19,8 +19,8 @@ class Board extends Component {
             <table className={'board'}>
                 <tbody>
                     {board.map(line => (
-                        <tr>
-                        {line.map(id => (<td><Square id={id}/></td>))}
+                        <tr key={line[0].charAt(0)}>
+                        {line.map(id => (<td key={id}><Square id={id}/></td>))}
                         </tr>
                     ))}
                 </tbody>
