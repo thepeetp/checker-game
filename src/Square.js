@@ -5,9 +5,6 @@ import { select, move } from './actions';
 
 class Square extends Component {
 
-    constructor(props) {
-        super(props);
-    }
     
     render() {
         return (
@@ -28,13 +25,16 @@ class Square extends Component {
         return this.available ? 'grey' : 'white';
     }
 
-    getPieceClassName({hasPiece, isSelected}) {
+    getPieceClassName({hasPiece, isSelected, isKing}) {
         let classes = [];
         if(hasPiece) {
             classes.push('piece');
         }
         if(isSelected) {
             classes.push('select');
+        }
+        if(isKing) {
+            classes.push('king');
         }
         return classes.join(' ');
     }
@@ -47,6 +47,7 @@ class Square extends Component {
 
 const mapStateToProps = (state, ownProps) => ({
     hasPiece: state.gameReducer.pieces.map(o => o.position).includes(ownProps.id),
+    isKing: state.gameReducer.pieces.filter(o => o.type === 'KING').map(o => o.position).includes(ownProps.id),
     isSelected: state.gameReducer.player.select === ownProps.id
 });
 

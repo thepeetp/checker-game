@@ -14,9 +14,21 @@ const gameReducer = (state = {pieces, player}, action) => {
         case 'MOVE' : 
             let {pieces, player} = state;
             let selectedPiece = pieces.filter(o => o.position === player.select)[0];
-            if(player.select && selectedPiece && validate(selectedPiece.position, action.position, selectedPiece.type === 'KING')) {
-                selectedPiece.position = action.position;
-                player.select = '';
+            if(player.select && selectedPiece) {
+                let validateParam = {
+                    from: selectedPiece.position, 
+                    to: action.position, 
+                    isKing: selectedPiece.type === 'KING', 
+                    pieces
+                };
+                if(validate(validateParam)) {
+                    selectedPiece.position = action.position;
+                    player.select = '';
+                    let row = selectedPiece.position.charAt(0);
+                    if(row === promotePosition) {
+                        selectedPiece.type = 'KING';
+                    }
+                }
             }
             return Object.assign({}, state);
             break;
@@ -26,15 +38,22 @@ const gameReducer = (state = {pieces, player}, action) => {
 };
 
 
-function validate(from, to, isKing) {
-    if(isKing){
-        return true;
+function validate(param) {
+    if(param.isKing){
+        return validateKing(param);
     } else {
-        let moveFront = String.fromCharCode(from.charCodeAt(0) + 1) === to.charAt(0);
-        let colPosition = Number(from.charAt(1));
-        let withinArea = [colPosition + 1, colPosition - 1].includes(Number(to.charAt(1)));
-        return moveFront && withinArea;
+        return validateMen(param);
     }
+}
+
+function validateMen({from, to}) {
+    let moveFront = String.fromCharCode(from.charCodeAt(0) + 1) === to.charAt(0);
+    let colPosition = Number(from.charAt(1));
+    let withinArea = [colPosition + 1, colPosition - 1].includes(Number(to.charAt(1)));
+    return moveFront && withinArea;
+}
+
+function validateKing({from, to}) {
     return true;
 }
 
