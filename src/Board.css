@@ -1,0 +1,8 @@
+.board tr td {
+    border: 1px solid black;
+}
+
+.board {
+    border: 1px solid black;
+    margin: auto;
+}
