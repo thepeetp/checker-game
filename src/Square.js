@@ -41,7 +41,7 @@ class Square extends Component {
 
     get available() {
         let position = this.props.id;
-        return position.substr(1) % 2 == 0 == position.charCodeAt(0) % 2 == 0;
+        return (position.substr(1) % 2 === 0) === (position.charCodeAt(0) % 2 === 0);
     }
 }
 

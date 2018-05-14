@@ -12,7 +12,7 @@ let player = {
 
 const gameReducer = (state = {pieces, player}, action) => {
     switch(action.type) {
-        case 'SELECT' : return Object.assign({}, state, {player: { select: action.position}}); break;
+        case 'SELECT' : return Object.assign({}, state, {player: { select: action.position}});
         case 'MOVE' : 
             let {pieces, player} = state;
             let selectedPiece = pieces.filter(o => o.position === player.select)[0];
@@ -33,10 +33,8 @@ const gameReducer = (state = {pieces, player}, action) => {
                 }
             }
             return Object.assign({}, state);
-            break;
         default: return state;
     }
-    return state;
 };
 
 
