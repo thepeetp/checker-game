@@ -1,3 +1,5 @@
+const size = 8;
+const firstLine = 'A';
 const promotePosition = 'H';
 
 let pieces = ['A1', 'A3', 'A5', 'A7', 'B2', 'B4', 'B6', 'B8'].map(position => {
@@ -53,8 +55,32 @@ function validateMen({from, to}) {
     return moveFront && withinArea;
 }
 
-function validateKing({from, to}) {
-    return true;
+function validateKing({from, to, pieces}) {
+    let allowPaths = [];
+    const currentLineCode = from.charCodeAt(0);
+    const endLineCode = firstLine.charCodeAt(0) + size;
+    const firstLineCode = firstLine.charCodeAt(0);
+    const currentColIndex = Number(from.charAt(1));
+    for(let i = 1; i < endLineCode - currentLineCode; i++) {
+        let allowLine = String.fromCharCode(currentLineCode + i);
+        allowPaths.push(allowLine + (currentColIndex + i));
+        allowPaths.push(allowLine + (currentColIndex - i));
+    }
+    for(let i = 1; i <= currentLineCode - firstLineCode ; i++) {
+        let allowLine = String.fromCharCode(currentLineCode - i);
+        allowPaths.push(allowLine + (currentColIndex + i));
+        allowPaths.push(allowLine + (currentColIndex - i));
+    }
+    return allowPaths.filter(removeExceed).filter(o => removeExistingPiece(o, pieces)).includes(to);
+}
+
+function removeExceed(position) {
+    let col = Number(position.substr(1));
+    return col >= 1 && col <= 8
+}
+
+function removeExistingPiece(position, pieces) {
+    return !pieces.map(o => o.position).includes(position)
 }
 
 
