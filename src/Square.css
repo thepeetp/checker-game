@@ -14,7 +14,6 @@
 .piece {
     width: 45px;
     height: 45px;
-    background-color: #1987c4;
     border-radius: 50%;
     position: relative;
     top: 50%;
@@ -22,10 +21,19 @@
     transform: translate(-50%, -50%);
 }
 
+
 .king {
     border: 5px solid #eab041;
 }
 
 .select {
     background-color: #6227ae;
+}
+
+.player {
+    background-color: #1987c4;
+}
+
+.enemy {
+    background-color: 	#c83737;
 }

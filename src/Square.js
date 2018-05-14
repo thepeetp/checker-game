@@ -7,16 +7,19 @@ class Square extends Component {
 
     
     render() {
+        console.log(this.props);
         return (
             <div className={`box ${this.color}`} onClick={() => this.onSelect(this.props)}>
                 <div className={this.getPieceClassName(this.props)}></div>
             </div>);
     }
 
-    onSelect({id: position, hasPiece}) {
-        if(hasPiece) {
+    onSelect({id: position, isPlayer, isEnemy}) {
+        if(isPlayer) {
             this.props.select(position);
-        } else if(this.available) {
+        } else if(isEnemy) {
+
+        }else if(this.available) {
             this.props.move(position);
         }
     }
@@ -25,14 +28,19 @@ class Square extends Component {
         return this.available ? 'grey' : 'white';
     }
 
-    getPieceClassName({hasPiece, isSelected, isKing}) {
+    getPieceClassName({isPiece, isPlayer, isEnemy, isSelected, isKing}) {
         let classes = [];
-        if(hasPiece) {
+        if(isPlayer || isEnemy) {
             classes.push('piece');
+            if(isSelected) {
+                classes.push('select');
+            } else if(isPlayer) {
+                classes.push('player');
+            } else if(isEnemy) {
+                classes.push('enemy');
+            }
         }
-        if(isSelected) {
-            classes.push('select');
-        }
+        
         if(isKing) {
             classes.push('king');
         }
@@ -46,8 +54,9 @@ class Square extends Component {
 }
 
 const mapStateToProps = (state, ownProps) => ({
-    hasPiece: state.gameReducer.pieces.map(o => o.position).includes(ownProps.id),
-    isKing: state.gameReducer.pieces.filter(o => o.type === 'KING').map(o => o.position).includes(ownProps.id),
+    isPlayer: state.gameReducer.playerPieces.map(o => o.position).includes(ownProps.id),
+    isEnemy: state.gameReducer.enemyPieces.map(o => o.position).includes(ownProps.id),
+    isKing: state.gameReducer.playerPieces.filter(o => o.type === 'KING').map(o => o.position).includes(ownProps.id),
     isSelected: state.gameReducer.player.select === ownProps.id
 });
 
