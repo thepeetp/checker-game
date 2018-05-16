@@ -9,14 +9,19 @@ const initPieces = (positions) => positions.map(position => {
 let playerPieces = initPieces(['A1', 'A3', 'A5', 'A7', 'B2', 'B4', 'B6', 'B8']);
 let enemyPieces = initPieces(['H2', 'H4', 'H6', 'H8', 'G1', 'G3', 'G5', 'G7']);
 
-let player = {
-    select: ''
+const player = {
+    select: '',
+    turn: false
 };
 
-const gameReducer = (state = {playerPieces, enemyPieces, player}, action) => {
+let rooms = [];
+
+
+const gameReducer = (state = {playerPieces, enemyPieces, player, rooms}, action) => {
     switch(action.type) {
         case 'SELECT' : 
-            return Object.assign({}, state, {player: { select: action.position}});
+            state.player.select = action.position;
+            return Object.assign({}, state);
         case 'MOVE' : 
             let {playerPieces, player} = state;
             let selectedPiece = playerPieces.filter(o => o.position === player.select)[0];
@@ -36,6 +41,19 @@ const gameReducer = (state = {playerPieces, enemyPieces, player}, action) => {
                     }
                 }
             }
+            return Object.assign({}, state);
+        case 'SET_PLAYER_NAME': 
+            return Object.assign({}, state, {player: {name: action.name}});
+        case 'UPDATE_ROOMS': return Object.assign({}, state, {rooms: action.rooms});
+        case 'JOIN_ROOM': 
+            var {player} = state;
+            player.room = action.room;
+            player.side = 'B';
+            return Object.assign({}, state);
+        case 'CREATE_ROOM': 
+            var {player} = state;
+            player.room = action.name;
+            player.side = 'A';
             return Object.assign({}, state);
         default: return state;
     }

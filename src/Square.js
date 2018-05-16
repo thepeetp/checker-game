@@ -7,7 +7,6 @@ class Square extends Component {
 
     
     render() {
-        console.log(this.props);
         return (
             <div className={`box ${this.color}`} onClick={() => this.onSelect(this.props)}>
                 <div className={this.getPieceClassName(this.props)}></div>

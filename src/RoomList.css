@@ -1,0 +1,8 @@
+.room-container {
+    display: flex;
+    padding: 200px;
+    padding-top: 50px;
+    align-items: center;
+    justify-content: space-around;
+    flex-wrap: wrap;
+}
