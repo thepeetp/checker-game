@@ -16,7 +16,7 @@ var config = {
     database.ref('rooms').on('value', function(snapshot) {
         let results = [];
         snapshot.forEach(function(childSnapshot) {
-            results.push(childSnapshot.key);
+            results.push(childSnapshot.val().title);
         })
         callback(results);
     });

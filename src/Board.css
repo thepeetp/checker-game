@@ -5,4 +5,5 @@
 .board {
     border: 1px solid black;
     margin: auto;
+    margin-top: 50px;
 }

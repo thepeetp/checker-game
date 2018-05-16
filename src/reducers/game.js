@@ -11,7 +11,7 @@ let enemyPieces = initPieces(['H2', 'H4', 'H6', 'H8', 'G1', 'G3', 'G5', 'G7']);
 
 const player = {
     select: '',
-    turn: false
+    turn: 'A'
 };
 
 let rooms = [];
