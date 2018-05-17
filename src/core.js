@@ -16,16 +16,29 @@ var config = {
     database.ref('rooms').on('value', function(snapshot) {
         let results = [];
         snapshot.forEach(function(childSnapshot) {
-            results.push(childSnapshot.val().title);
+            results.push({
+                id: childSnapshot.key,
+                title: childSnapshot.val().title
+            });
         })
         callback(results);
     });
   }
 
-  export function addNewRoom(title) {
+  export function addNewRoom(title, aPieces, bPieces, callback) {
     let newRoom = database.ref('rooms').push(title);
     newRoom.set({
         status: 'available',
-        title: title
+        title: title,
+        A: aPieces,
+        B: bPieces
+    });
+    callback(newRoom.key);
+  }
+
+
+  export function onPiecesChange(roomId, callback) {
+    database.ref('rooms/' + roomId).on('value', function(snapshot) {
+        callback(snapshot.val());
     });
   }

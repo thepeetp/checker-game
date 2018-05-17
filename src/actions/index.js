@@ -34,9 +34,9 @@ export const joinRoom = room => {
     }
 }
 
-export const createRoom = name => {
+export const createRoom = room => {
     return {
         type: 'CREATE_ROOM',
-        name
+        room
     }
 }

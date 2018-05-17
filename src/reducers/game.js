@@ -1,3 +1,4 @@
+
 const size = 8;
 const firstLine = 'A';
 const promotePosition = 'H';
@@ -51,8 +52,8 @@ const gameReducer = (state = {playerPieces, enemyPieces, player, rooms}, action)
             player.side = 'B';
             return Object.assign({}, state);
         case 'CREATE_ROOM': 
-            var {player} = state;
-            player.room = action.name;
+            var {player, playerPieces, enemyPieces} = state;
+            player.room = action.room;
             player.side = 'A';
             return Object.assign({}, state);
         default: return state;

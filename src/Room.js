@@ -8,7 +8,7 @@ class Room extends React.Component {
 
 
     onSelectRoom = () => {
-        this.props.joinRoom(this.props.name);
+        this.props.joinRoom(this.props.id);
     };
 
     render() {
@@ -17,7 +17,7 @@ class Room extends React.Component {
                 <Card className={'card'}>
                     <CardContent>
                         <Typography>
-                            {this.props.name}
+                            {this.props.title}
                         </Typography>
                     </CardContent>
                     <CardActions>
@@ -35,7 +35,7 @@ const mapStateToProps = (state, ownProps) => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-    joinRoom: rooms => dispatch(joinRoom(rooms))
+    joinRoom: room => dispatch(joinRoom(room))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Room);

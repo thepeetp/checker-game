@@ -19,7 +19,7 @@ class RoomList extends React.Component {
     render() {
         return (
             <div className={'room-container'}>
-                {this.props.rooms.map(room => <Room key={room} name={room}/>)}
+                {this.props.rooms.map(room => <Room key={room.id} id={room.id} title={room.title}/>)}
             </div>
         );
     }
