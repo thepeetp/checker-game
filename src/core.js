@@ -25,20 +25,21 @@ var config = {
     });
   }
 
-  export function addNewRoom(title, aPieces, bPieces, callback) {
+  export function addNewRoom(title, pieces, callback) {
     let newRoom = database.ref('rooms').push(title);
     newRoom.set({
         status: 'available',
         title: title,
-        A: aPieces,
-        B: bPieces
+        A: {pieces},
+        B: {pieces}
     });
     callback(newRoom.key);
   }
 
-
-  export function onPiecesChange(roomId, callback) {
-    database.ref('rooms/' + roomId).on('value', function(snapshot) {
+  
+  export function watchMovement(roomId, callback) {
+      //watch enemy move
+    database.ref('rooms/' + roomId + '/A').on('valaue', function(snapshot) {
         callback(snapshot.val());
     });
   }

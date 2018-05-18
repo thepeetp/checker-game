@@ -45,16 +45,24 @@ const gameReducer = (state = {playerPieces, enemyPieces, player, rooms}, action)
             return Object.assign({}, state);
         case 'SET_PLAYER_NAME': 
             return Object.assign({}, state, {player: {name: action.name}});
-        case 'UPDATE_ROOMS': return Object.assign({}, state, {rooms: action.rooms});
+        case 'UPDATE_ROOMS': 
+            return Object.assign({}, state, {rooms: action.rooms});
         case 'JOIN_ROOM': 
             var {player} = state;
             player.room = action.room;
             player.side = 'B';
+            player.turn = 'A';
             return Object.assign({}, state);
         case 'CREATE_ROOM': 
             var {player, playerPieces, enemyPieces} = state;
             player.room = action.room;
             player.side = 'A';
+            player.turn = 'A';
+            return Object.assign({}, state);
+        case 'ENEMY_MOVE':
+            state.playerPieces = action.playerPieces;
+            state.enemyPieces = action.enemyPieces;
+            state.player.turn = state.player.side === 'A' ? 'B' : 'A';
             return Object.assign({}, state);
         default: return state;
     }

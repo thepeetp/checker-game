@@ -40,3 +40,12 @@ export const createRoom = room => {
         room
     }
 }
+
+
+export const onEnemyMove = (playerPieces, enemyPieces) => {
+    return {
+        type: 'ENEMY_MOVE',
+        playerPieces,
+        enemyPieces
+    }
+}

@@ -14,7 +14,7 @@ class App extends Component {
 
   createRoom = () => {
     let roomName = randomPlace();
-    addNewRoom(roomName, this.props.playerPieces, this.props.enemyPieces, key => this.props.createRoom(key));
+    addNewRoom(roomName, this.props.playerPieces, key => this.props.createRoom(key));
   };
 
   componentWillMount() {
@@ -41,8 +41,7 @@ class App extends Component {
 
 const mapStateToProps = (state, ownProps) => ({
   readyToPlay: Boolean(state.gameReducer.player.room),
-  playerPieces: state.gameReducer.playerPieces,
-  enemyPieces: state.gameReducer.enemyPieces
+  playerPieces: state.gameReducer.playerPieces
 });
 
 const mapDispatchToProps = dispatch => ({
