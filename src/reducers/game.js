@@ -48,20 +48,21 @@ const gameReducer = (state = {playerPieces, enemyPieces, player, rooms}, action)
         case 'UPDATE_ROOMS': 
             return Object.assign({}, state, {rooms: action.rooms});
         case 'JOIN_ROOM': 
-            var {player} = state;
-            player.room = action.room;
-            player.side = 'B';
-            player.turn = 'A';
+            state.player.room = action.room;
+            state.player.side = 'B';
+            state.player.turn = 'A';
             return Object.assign({}, state);
         case 'CREATE_ROOM': 
-            var {player, playerPieces, enemyPieces} = state;
-            player.room = action.room;
-            player.side = 'A';
-            player.turn = 'A';
+            state.player.room = action.room;
+            state.player.side = 'A';
+            state.player.turn = 'A';
             return Object.assign({}, state);
         case 'ENEMY_MOVE':
             state.playerPieces = action.playerPieces;
-            state.enemyPieces = action.enemyPieces;
+            state.enemyPieces = action.enemyPieces.map(o => {
+                o.position = revert(o.position);
+                return o;   
+            });
             state.player.turn = state.player.side === 'A' ? 'B' : 'A';
             return Object.assign({}, state);
         default: return state;
@@ -112,5 +113,31 @@ function removeExistingPiece(position, pieces) {
     return !pieces.map(o => o.position).includes(position)
 }
 
+
+function revert(position) {
+    let columns = getAllColumns();
+    let rows = getAllRows();
+    let colIndex = columns.indexOf(position.charAt(0));
+    let rowIndex = rows.indexOf(position.charAt(1));
+    columns.reverse();
+    rows.reverse();
+    return columns[colIndex] + rows[rowIndex];
+}
+
+function getAllRows() {
+    let result = [];
+    for(let i = 1; i <= size; i++) {
+        result.push(String(i))
+    }
+    return result;
+}
+
+function getAllColumns() {
+    let result = [];
+    for(let i = 0; i < size; i++) {
+        result.push(String.fromCharCode(firstLine.charCodeAt(0) + i));
+    }
+    return result;
+}
 
 export default gameReducer;

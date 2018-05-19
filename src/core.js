@@ -38,8 +38,11 @@ var config = {
 
   
   export function watchMovement(roomId, callback) {
-      //watch enemy move
-    database.ref('rooms/' + roomId + '/A').on('valaue', function(snapshot) {
-        callback(snapshot.val());
+    database.ref('rooms/' + roomId).on('value', function(snapshot) {
+        let val = snapshot.val();
+        callback({
+            A: val.A.pieces,
+            B: val.B.pieces
+        });
     });
   }
