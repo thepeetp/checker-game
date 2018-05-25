@@ -14,11 +14,9 @@ class Square extends Component {
     }
 
     onSelect({id: position, isPlayer, isEnemy}) {
-        if(isPlayer) {
+        if(isPlayer && !isEnemy) {
             this.props.select(position);
-        } else if(isEnemy) {
-
-        }else if(this.available) {
+        } else if(this.available) {
             this.props.move(position);
         }
     }

@@ -1,3 +1,4 @@
+import { updateMovement } from '../core';
 
 const size = 8;
 const firstLine = 'A';
@@ -12,7 +13,8 @@ let enemyPieces = initPieces(['H2', 'H4', 'H6', 'H8', 'G1', 'G3', 'G5', 'G7']);
 
 const player = {
     select: '',
-    turn: 'A'
+    turn: 'A',
+    side: 'A'
 };
 
 let rooms = [];
@@ -24,6 +26,9 @@ const gameReducer = (state = {playerPieces, enemyPieces, player, rooms}, action)
             state.player.select = action.position;
             return Object.assign({}, state);
         case 'MOVE' : 
+            if(!isYourTurn(state)) {
+                return state;
+            }
             let {playerPieces, player} = state;
             let selectedPiece = playerPieces.filter(o => o.position === player.select)[0];
             if(player.select && selectedPiece) {
@@ -40,6 +45,9 @@ const gameReducer = (state = {playerPieces, enemyPieces, player, rooms}, action)
                     if(row === promotePosition) {
                         selectedPiece.type = 'KING';
                     }
+                    state.player.turn = state.player.side === 'A' ? 'B' : 'A';
+                    console.log(state);
+                    window.setTimeout(() => updateMovement(state.player.room, state.playerPieces, revertPieces(state.enemyPieces)));
                 }
             }
             return Object.assign({}, state);
@@ -58,11 +66,12 @@ const gameReducer = (state = {playerPieces, enemyPieces, player, rooms}, action)
             state.player.turn = 'A';
             return Object.assign({}, state);
         case 'ENEMY_MOVE':
+            if(isYourTurn(state)) {
+                return state;
+            }
+            console.log(action);
             state.playerPieces = action.playerPieces;
-            state.enemyPieces = action.enemyPieces.map(o => {
-                o.position = revert(o.position);
-                return o;   
-            });
+            state.enemyPieces = revertPieces(action.enemyPieces);
             state.player.turn = state.player.side === 'A' ? 'B' : 'A';
             return Object.assign({}, state);
         default: return state;
@@ -76,6 +85,18 @@ function validate(param) {
     } else {
         return validateMen(param);
     }
+}
+
+function revertPieces(pieces) {
+    return pieces.map(o => {
+        let piece = Object.assign({}, o);
+        piece.position = revert(piece.position);
+        return piece;   
+    });
+}
+
+function isYourTurn({player}) {
+    return player.turn === player.side;
 }
 
 function validateMen({from, to}) {

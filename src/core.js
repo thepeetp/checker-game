@@ -46,3 +46,8 @@ var config = {
         });
     });
   }
+
+  export function updateMovement(roomId, aPieces, bPieces) {
+    database.ref('rooms/' + roomId + '/A/pieces').set(aPieces);
+    database.ref('rooms/' + roomId + '/B/pieces').set(bPieces);
+  }
