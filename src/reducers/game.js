@@ -66,13 +66,10 @@ const gameReducer = (state = {playerPieces, enemyPieces, player, rooms}, action)
             state.player.turn = 'A';
             return Object.assign({}, state);
         case 'ENEMY_MOVE':
-            if(isYourTurn(state)) {
-                return state;
-            }
-            console.log(action);
             state.playerPieces = action.playerPieces;
             state.enemyPieces = revertPieces(action.enemyPieces);
-            state.player.turn = state.player.side === 'A' ? 'B' : 'A';
+            state.player.turn = state.player.turn === 'A' ? 'B' : 'A';
+            console.log(state.player.turn);
             return Object.assign({}, state);
         default: return state;
     }
@@ -96,6 +93,7 @@ function revertPieces(pieces) {
 }
 
 function isYourTurn({player}) {
+    console.log(player.side, player.turn);
     return player.turn === player.side;
 }
 
